@@ -117,11 +117,11 @@ export function TestimonialsSection() {
   const secondRow = testimonials.slice(testimonials.length / 2);
 
   return (
-    <section className="relative w-full overflow-hidden px-4 py-20 md:px-8">
+    <section id="testimonials" className="relative w-full overflow-hidden px-4 py-20 md:px-8">
       <div className="relative mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="mb-12 flex flex-col items-center text-center">
-          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary animate-pulse">
+          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
             <Star className="mr-2 size-4 fill-yellow-500 text-yellow-500" />
             Testimonials
           </div>

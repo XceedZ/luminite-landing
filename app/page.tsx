@@ -1,8 +1,12 @@
+import { TopBar } from "@/components/sections/topbar";
 import { HeroSection } from "@/components/sections/hero";
+import { TrustedBy } from "@/components/sections/trustedby";
 import { FeaturesSection } from "@/components/sections/features";
 import { IntegrationSection } from "@/components/sections/integration";
 import { TestimonialsSection } from "@/components/sections/testimonials";
+import { PricingSection } from "@/components/sections/pricing";
 import { CTASection } from "@/components/sections/cta";
+import { Footer } from "@/components/sections/footer";
 
 /**
  * Luminite AI Landing Page
@@ -11,12 +15,18 @@ import { CTASection } from "@/components/sections/cta";
  */
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col">
-      <HeroSection />
-      <FeaturesSection />
-      <IntegrationSection />
-      <TestimonialsSection />
-      <CTASection />
-    </main>
+    <>
+      <TopBar />
+      <main className="flex min-h-screen flex-col">
+        <HeroSection />
+        <TrustedBy />
+        <FeaturesSection />
+        <IntegrationSection />
+        <TestimonialsSection />
+        <PricingSection />
+        <CTASection />
+      </main>
+      <Footer />
+    </>
   );
 }

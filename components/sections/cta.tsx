@@ -1,7 +1,7 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { DotPattern } from "@/components/ui/dot-pattern";
 import { cn } from "@/lib/utils";
+import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern"
 
 /**
  * CTA Section Component
@@ -11,18 +11,19 @@ import { cn } from "@/lib/utils";
 export function CTASection() {
   return (
     <section className="relative w-full overflow-hidden px-4 py-20 md:px-8">
-      <div className="relative mx-auto max-w-7xl">
+      <div className=" relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden">
         {/* Background Pattern */}
-        <DotPattern
-          className={cn(
-            "absolute inset-0 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
-          )}
-        />
+      <InteractiveGridPattern
+        className={cn(
+          "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
+          "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12"
+        )}
+      />
 
         {/* CTA Content - No Card Wrapper */}
         <div className="relative z-10 flex flex-col items-center text-center">
           {/* Badge */}
-          <div className="mb-6 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary animate-pulse">
+          <div className="mb-6 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
             <Sparkles className="mr-2 size-4" />
             Start Your Journey
           </div>
@@ -49,10 +50,6 @@ export function CTASection() {
               </span>
             </ShimmerButton>
 
-            <button className="group inline-flex h-12 items-center justify-center rounded-lg border border-primary/20 bg-primary/5 px-8 text-sm font-medium transition-all duration-300 hover:bg-primary/10 hover:border-primary/30 hover:scale-105">
-              Talk to Sales
-              <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-            </button>
           </div>
 
           {/* Additional Info */}

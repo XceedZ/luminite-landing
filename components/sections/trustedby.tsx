@@ -53,7 +53,7 @@ export const TrustedBy: FC = () => {
     <section className="py-20">
       <div className="container mx-auto text-center">
         <h2 className="text-lg font-semibold text-muted-foreground tracking-wider uppercase mb-12">
-          Trusted by the world's best companies
+          Trusted by the world&apos;s best companies
         </h2>
 
         <ScrollVelocityContainer className="space-y-6">

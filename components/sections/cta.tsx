@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { cn } from "@/lib/utils";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern"
@@ -46,7 +46,7 @@ export function CTASection() {
           <div className="mb-8 flex flex-col gap-4 sm:flex-row animate-in fade-in-50 slide-in-from-bottom-4 duration-700 delay-500">
             <ShimmerButton className="shadow-2xl">
               <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
-                Get Started - It's Free
+                 Get Started - It&apos;s Free
               </span>
             </ShimmerButton>
 

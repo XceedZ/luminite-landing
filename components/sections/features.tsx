@@ -26,7 +26,7 @@ interface Task {
 }
 
 interface Feature {
-  Icon?: FC<any>;
+  Icon: React.ElementType;
   name: string;
   description: string;
   href: string;
@@ -80,9 +80,9 @@ const TerminalBackground = () => (
             <TypingAnimation>{`> USE knowledge_base;`}</TypingAnimation>
             <AnimatedSpan className="text-muted-foreground">Database changed</AnimatedSpan>
             <TypingAnimation>{`> SELECT title FROM articles LIMIT 3;`}</TypingAnimation>
-            <AnimatedSpan className="text-cyan-500">- "Intro to AI"</AnimatedSpan>
-            <AnimatedSpan className="text-cyan-500">- "Advanced Task Management"</AnimatedSpan>
-            <AnimatedSpan className="text-cyan-500">- "Team Collaboration Guide"</AnimatedSpan>
+            <AnimatedSpan className="text-cyan-500">- &quot;Intro to AI&quot;</AnimatedSpan>
+            <AnimatedSpan className="text-cyan-500">- &quot;Advanced Task Management&quot;</AnimatedSpan>
+            <AnimatedSpan className="text-cyan-500">- &quot;Team Collaboration Guide&quot;</AnimatedSpan>
         </Terminal>
     </div>
 );
@@ -114,7 +114,7 @@ const AnalyticsBackground = () => (
 export function FeaturesSection() {
     const features: Feature[] = [
       {
-        Icon: () => null,
+        Icon: "div",
         name: "Smart Task Management",
         description:
           "Organize, prioritize, and track tasks with intelligent automation.",
@@ -124,7 +124,7 @@ export function FeaturesSection() {
         background: <TaskListBackground />,
       },
       {
-        Icon: () => null,
+        Icon: "div",
         name: "AI-Powered Intelligence",
         description:
           "Leverage AI to automate tasks, suggest priorities, and provide insights.",
@@ -134,7 +134,7 @@ export function FeaturesSection() {
         background: <AIGlobeBackground />,
       },
       {
-        Icon: () => null,
+        Icon: "div",
         name: "Knowledge Database",
         description:
           "Build and access your organization's knowledge base seamlessly.",
@@ -144,7 +144,7 @@ export function FeaturesSection() {
         background: <TerminalBackground />,
       },
       {
-        Icon: () => null,
+        Icon: "div",
         name: "Analytics & Insights",
         description:
           "Gain actionable insights with comprehensive analytics and tracking.",

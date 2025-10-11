@@ -1,6 +1,7 @@
 import { TopBar } from "@/components/sections/topbar";
 import { HeroSection } from "@/components/sections/hero";
 import { TrustedBy } from "@/components/sections/trustedby";
+import { ShowcaseSection } from "@/components/sections/showcase";
 import { FeaturesSection } from "@/components/sections/features";
 import { IntegrationSection } from "@/components/sections/integration";
 import { TestimonialsSection } from "@/components/sections/testimonials";
@@ -20,6 +21,7 @@ export default function Home() {
       <main className="flex min-h-screen flex-col">
         <HeroSection />
         <TrustedBy />
+        <ShowcaseSection />
         <FeaturesSection />
         <IntegrationSection />
         <TestimonialsSection />

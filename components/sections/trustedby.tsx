@@ -23,7 +23,7 @@ interface LogoItemProps {
 // Memberikan tipe pada array logos
 const logos: Logo[] = [
   { name: "Google Cloud", url: "https://cdn.worldvectorlogo.com/logos/google-cloud-1.svg" },
-  { name: "Notion", url: "https://cdn.worldvectorlogo.com/logos/notion-logo-1.svg" },
+  { name: "Notion", url: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" },
   { name: "Microsoft Azure", url: "https://cdn.worldvectorlogo.com/logos/microsoft-azure-2.svg" },
   { name: "Slack", url: "https://cdn.worldvectorlogo.com/logos/slack-new-logo.svg" },
   { name: "Figma", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Figma-logo.svg/120px-Figma-logo.svg.png" },

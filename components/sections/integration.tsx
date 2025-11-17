@@ -1,10 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { AnimatedBeam } from "@/components/ui/animated-beam";
 import { cn } from "@/lib/utils";
 import { Workflow } from "lucide-react";
 import { MagicCard } from "@/components/ui/magic-card";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register GSAP plugins
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // URL Logo Aplikasi
 const logos = {
@@ -35,14 +42,21 @@ const Circle = React.forwardRef<
 Circle.displayName = "Circle";
 
 export function IntegrationSection() {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const div1Ref = React.useRef<HTMLDivElement>(null);
-  const div2Ref = React.useRef<HTMLDivElement>(null);
-  const div3Ref = React.useRef<HTMLDivElement>(null);
-  const div4Ref = React.useRef<HTMLDivElement>(null);
-  const div5Ref = React.useRef<HTMLDivElement>(null);
-  const div6Ref = React.useRef<HTMLDivElement>(null);
-  const div7Ref = React.useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+  
+  const div1Ref = useRef<HTMLDivElement>(null);
+  const div2Ref = useRef<HTMLDivElement>(null);
+  const div3Ref = useRef<HTMLDivElement>(null);
+  const div4Ref = useRef<HTMLDivElement>(null);
+  const div5Ref = useRef<HTMLDivElement>(null);
+  const div6Ref = useRef<HTMLDivElement>(null);
+  const div7Ref = useRef<HTMLDivElement>(null);
 
   const integrationCards = [
     { iconUrl: logos.notion, title: "Knowledge Base", description: "Connect your Notion pages and databases seamlessly." },
@@ -50,24 +64,202 @@ export function IntegrationSection() {
     { iconUrl: logos.github, title: "Developer Workflow", description: "Connect with GitHub to sync issues and project status." },
   ];
 
+  const circleRefs = [div1Ref, div2Ref, div3Ref, div4Ref, div5Ref, div6Ref, div7Ref];
+
+  useEffect(() => {
+    if (!sectionRef.current || !headerRef.current || !titleRef.current || !descriptionRef.current || !containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Animate header badge
+      gsap.fromTo(
+        headerRef.current?.querySelector(".badge"),
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: -20,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate title
+      gsap.fromTo(
+        titleRef.current,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate description
+      gsap.fromTo(
+        descriptionRef.current,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate circles with stagger and scale
+      circleRefs.forEach((ref, index) => {
+        if (ref.current) {
+          gsap.fromTo(
+            ref.current,
+            {
+              opacity: 0,
+              scale: 0,
+              rotation: -180,
+            },
+            {
+              opacity: 1,
+              scale: 1,
+              rotation: 0,
+              duration: 0.8,
+              ease: "back.out(1.7)",
+              delay: index * 0.1,
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+
+          // Hover animation for circles
+          ref.current.addEventListener("mouseenter", () => {
+            gsap.to(ref.current, {
+              scale: 1.2,
+              rotation: 360,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          });
+
+          ref.current.addEventListener("mouseleave", () => {
+            gsap.to(ref.current, {
+              scale: 1,
+              rotation: 0,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          });
+        }
+      });
+
+      // Animate container
+      gsap.fromTo(
+        containerRef.current,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 75%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate integration cards with stagger
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.querySelectorAll(".integration-card"),
+          {
+            opacity: 0,
+            scale: 0.9,
+            y: 50,
+          },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      // Parallax background
+      gsap.to(backgroundRef.current, {
+        y: -80,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="integration" className="relative w-full overflow-hidden px-4 py-20 md:px-8">
-      <div className="relative mx-auto max-w-7xl">
+    <section ref={sectionRef} id="integration" className="relative w-full overflow-hidden px-4 py-32 md:px-8">
+      {/* Animated Background */}
+      <div ref={backgroundRef} className="absolute inset-0 -z-10 overflow-hidden">
+      </div>
+
+      <div className="relative mx-auto max-w-7xl z-10">
         {/* Section Header */}
-        <div className="mb-16 flex flex-col items-center text-center">
-          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+        <div ref={headerRef} className="mb-16 flex flex-col items-center text-center">
+          <div className="badge mb-4 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm px-4 py-1.5 text-sm font-medium text-primary">
             <Workflow className="mr-2 size-4" />
             Integrations
           </div>
           
-          {/* KUNCI PERBAIKAN: Mengembalikan ke h2 dengan animate-pulse */}
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl animate-in fade-in-50 slide-in-from-bottom-4 duration-700">
+          <h2 ref={titleRef} className="mb-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
             Seamlessly connects
             <br />
-            <span className="text-primary animate-pulse">all your tools</span>
+            <span className="text-primary">all your tools</span>
           </h2>
           
-          <p className="max-w-2xl text-lg text-muted-foreground animate-in fade-in-50 slide-in-from-bottom-4 duration-700 delay-300">
+          <p ref={descriptionRef} className="max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
             Luminite AI integrates with your favorite tools and databases,
             creating a unified workspace powered by AI.
           </p>
@@ -75,7 +267,7 @@ export function IntegrationSection() {
 
         {/* Animated Beams Visualization */}
         <div
-          className="relative mx-auto flex h-[400px] w-full max-w-4xl items-center justify-center overflow-hidden rounded-lg border border-primary/20 bg-primary/5 p-10 md:shadow-xl backdrop-blur-sm"
+          className="relative mx-auto flex h-[400px] w-full max-w-4xl items-center justify-center overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-10 md:shadow-2xl backdrop-blur-md"
           ref={containerRef}
         >
           <div className="flex size-full flex-col items-stretch justify-between gap-10">
@@ -104,9 +296,9 @@ export function IntegrationSection() {
         </div>
 
         {/* Integration Cards */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div ref={cardsRef} className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {integrationCards.map((item, idx) => (
-            <MagicCard key={idx} className="group p-6 transition-all duration-300 hover:scale-105">
+            <MagicCard key={idx} className="integration-card group p-6 transition-all duration-300 hover:scale-105">
               <div className="flex size-12 items-center justify-center rounded-lg bg-primary/10 mb-4 transition-transform group-hover:scale-110">
                 <img src={item.iconUrl} alt={`${item.title} logo`} className="size-6" />
               </div>

@@ -22,7 +22,7 @@ export const ShimmerButton = React.forwardRef<
       shimmerSize = "0.05em",
       shimmerDuration = "3s",
       borderRadius = "100px",
-      background = "rgba(0, 0, 0, 1)",
+      background,
       className,
       children,
       ...props
@@ -31,61 +31,55 @@ export const ShimmerButton = React.forwardRef<
   ) => {
     return (
       <button
-        style={
+         style={
           {
             "--spread": "90deg",
             "--shimmer-color": shimmerColor,
             "--radius": borderRadius,
             "--speed": shimmerDuration,
             "--cut": shimmerSize,
-            "--bg": background,
+            "--bg": background || "rgba(0, 0, 0, 0.3)",
           } as CSSProperties
         }
         className={cn(
-          "group relative z-0 flex cursor-pointer items-center justify-center overflow-hidden [border-radius:var(--radius)] border border-white/10 px-6 py-3 whitespace-nowrap text-white [background:var(--bg)]",
+          "group relative z-0 flex cursor-pointer items-center justify-center overflow-hidden [border-radius:var(--radius)] px-6 py-3 whitespace-nowrap text-foreground bg-background/50 backdrop-blur-md",
           "transform-gpu transition-transform duration-300 ease-in-out active:translate-y-px",
+          "hover:bg-background/60",
           className
         )}
         ref={ref}
         {...props}
       >
-        {/* spark container */}
+        {/* Border shimmer wrapper - positioned outside to create border effect */}
         <div
           className={cn(
-            "-z-30 blur-[2px]",
-            "[container-type:size] absolute inset-0 overflow-visible"
+            "absolute -inset-[2px] -z-10 [border-radius:var(--radius)]",
+            "bg-[conic-gradient(from_calc(270deg-(var(--spread)*0.5)),transparent_0,var(--shimmer-color)_var(--spread),transparent_var(--spread))]",
+            "animate-spin-around",
+            "[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)]",
+            "[mask-composite:xor]",
+            "[padding:2px]"
           )}
-        >
-          {/* spark */}
-          <div className="animate-shimmer-slide absolute inset-0 [aspect-ratio:1] h-[100cqh] [border-radius:0] [mask:none]">
-            {/* spark before */}
-            <div className="animate-spin-around absolute -inset-full w-auto [translate:0_0] rotate-0 [background:conic-gradient(from_calc(270deg-(var(--spread)*0.5)),transparent_0,var(--shimmer-color)_var(--spread),transparent_var(--spread))]" />
-          </div>
-        </div>
-        {children}
+        />
+
+        {/* Inner background to cover the shimmer except border */}
+        <div
+          className={cn(
+            "absolute inset-0 [border-radius:var(--radius)] bg-background/50 backdrop-blur-md -z-10"
+          )}
+        />
+
+        {/* Content */}
+        <span className="relative z-10">{children}</span>
 
         {/* Highlight */}
         <div
           className={cn(
             "absolute inset-0 size-full",
-
-            "rounded-2xl px-4 py-1.5 text-sm font-medium shadow-[inset_0_-8px_10px_#ffffff1f]",
-
-            // transition
+            "[border-radius:var(--radius)] shadow-[inset_0_-8px_10px_rgba(255,255,255,0.05)]",
             "transform-gpu transition-all duration-300 ease-in-out",
-
-            // on hover
-            "group-hover:shadow-[inset_0_-6px_10px_#ffffff3f]",
-
-            // on click
-            "group-active:shadow-[inset_0_-10px_10px_#ffffff3f]"
-          )}
-        />
-
-        {/* backdrop */}
-        <div
-          className={cn(
-            "absolute [inset:var(--cut)] -z-20 [border-radius:var(--radius)] [background:var(--bg)]"
+            "group-hover:shadow-[inset_0_-6px_10px_rgba(255,255,255,0.1)]",
+            "group-active:shadow-[inset_0_-10px_10px_rgba(255,255,255,0.15)]"
           )}
         />
       </button>

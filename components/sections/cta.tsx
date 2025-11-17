@@ -1,7 +1,8 @@
-import { Sparkles } from "lucide-react";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { cn } from "@/lib/utils";
-import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern"
+"use client";
+
+import { useEffect, useRef } from "react";
+import { Rocket } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 /**
  * CTA Section Component
@@ -9,54 +10,201 @@ import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern
  * @author AlexanderA
  */
 export function CTASection() {
-  return (
-    <section className="relative w-full overflow-hidden px-4 py-20 md:px-8">
-      <div className=" relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden">
-        {/* Background Pattern */}
-      <InteractiveGridPattern
-        className={cn(
-          "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
-          "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12"
-        )}
-      />
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
 
-        {/* CTA Content - No Card Wrapper */}
+  useEffect(() => {
+    if (!sectionRef.current || !headerRef.current || !titleRef.current || !descriptionRef.current) return;
+
+    // Dynamic import GSAP untuk code splitting
+    Promise.all([
+      import("gsap"),
+      import("gsap/ScrollTrigger"),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      const gsap = gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.default;
+      
+      if (typeof window !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      const ctx = gsap.context(() => {
+      // Animate header badge
+      gsap.fromTo(
+        headerRef.current?.querySelector(".badge"),
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: -20,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate title
+      gsap.fromTo(
+        titleRef.current,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate description
+      gsap.fromTo(
+        descriptionRef.current,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate buttons
+      if (buttonsRef.current) {
+        gsap.fromTo(
+          buttonsRef.current,
+          {
+            opacity: 0,
+            y: 30,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            delay: 0.4,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 70%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      // Animate info items
+      if (infoRef.current) {
+        gsap.fromTo(
+          infoRef.current.querySelectorAll(".info-item"),
+          {
+            opacity: 0,
+            x: -20,
+          },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            stagger: 0.1,
+            delay: 0.6,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 65%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      // Parallax background
+      gsap.to(backgroundRef.current, {
+        y: -80,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+      }, sectionRef);
+
+      return () => ctx.revert();
+    });
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="relative w-full overflow-hidden px-4 py-32 md:px-8">
+      {/* Animated Background */}
+      <div ref={backgroundRef} className="absolute inset-0 -z-10 overflow-hidden">
+      </div>
+
+      <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden z-10">
+        {/* CTA Content */}
         <div className="relative z-10 flex flex-col items-center text-center">
           {/* Badge */}
-          <div className="mb-6 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-            <Sparkles className="mr-2 size-4" />
+          <div ref={headerRef} className="badge mb-6 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm px-4 py-1.5 text-sm font-medium text-primary">
+            <Rocket className="mr-2 size-4" />
             Start Your Journey
           </div>
 
           {/* Headline */}
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl animate-in fade-in-50 slide-in-from-bottom-4 duration-700">
+          <h2 ref={titleRef} className="mb-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
             Ready to transform
             <br />
-            <span className="text-primary animate-pulse">your productivity?</span>
+            <span className="text-primary">your productivity?</span>
           </h2>
 
           {/* Description */}
-          <p className="mb-8 max-w-2xl text-lg text-muted-foreground md:text-xl animate-in fade-in-50 slide-in-from-bottom-4 duration-700 delay-300">
+          <p ref={descriptionRef} className="mb-8 max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
             Join thousands of teams already using Luminite AI to streamline
             their workflows and boost productivity with intelligent task
             management.
           </p>
 
           {/* CTA Buttons */}
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row animate-in fade-in-50 slide-in-from-bottom-4 duration-700 delay-500">
-            <ShimmerButton className="shadow-2xl">
-              <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10 lg:text-lg">
-                 Get Started - It&apos;s Free
-              </span>
-            </ShimmerButton>
-
+          <div ref={buttonsRef} className="mb-8 flex flex-col gap-4 sm:flex-row">
+            <Button
+              className="shadow-2xl hover:scale-105 transition-transform bg-primary text-primary-foreground hover:bg-primary/90"
+              size="lg"
+              onClick={() => window.open('https://luminite-ai.vercel.app', '_blank')}
+            >
+              Get Started - It&apos;s Free
+            </Button>
           </div>
 
           {/* Additional Info */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground animate-in fade-in-50 slide-in-from-bottom-4 duration-700 delay-700">
-            <div className="flex items-center gap-2">
+          <div ref={infoRef} className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+            <div className="info-item flex items-center gap-2">
               <svg
-                className="size-5 text-green-500 animate-pulse"
+                className="size-5 text-green-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -68,12 +216,11 @@ export function CTASection() {
               </svg>
               <span>Free 14-day trial</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="info-item flex items-center gap-2">
               <svg
-                className="size-5 text-green-500 animate-pulse"
+                className="size-5 text-green-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
-                style={{ animationDelay: "0.1s" }}
               >
                 <path
                   fillRule="evenodd"
@@ -83,12 +230,11 @@ export function CTASection() {
               </svg>
               <span>No credit card required</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="info-item flex items-center gap-2">
               <svg
-                className="size-5 text-green-500 animate-pulse"
+                className="size-5 text-green-500"
                 fill="currentColor"
                 viewBox="0 0 20 20"
-                style={{ animationDelay: "0.2s" }}
               >
                 <path
                   fillRule="evenodd"

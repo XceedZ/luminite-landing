@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import {
-  Sparkles,
+  Layers,
 } from "lucide-react";
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import { AnimatedList } from "@/components/ui/animated-list";
@@ -11,7 +12,7 @@ import {
   TypingAnimation,
   AnimatedSpan,
 } from "@/components/ui/terminal";
-import { OrbitingCircles } from "@/components/ui/orbiting-circles"; // <-- IMPORT BARU
+import { OrbitingCircles } from "@/components/ui/orbiting-circles";
 import { cn } from "@/lib/utils";
 import type { FC, ReactNode } from "react";
 
@@ -155,31 +156,160 @@ export function FeaturesSection() {
       },
     ];
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current || !headerRef.current || !titleRef.current || !descriptionRef.current || !gridRef.current) return;
+
+    // Dynamic import GSAP untuk code splitting
+    Promise.all([
+      import("gsap"),
+      import("gsap/ScrollTrigger"),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      const gsap = gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.default;
+      
+      if (typeof window !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      const ctx = gsap.context(() => {
+      // Animate header badge
+      gsap.fromTo(
+        headerRef.current?.querySelector(".badge"),
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: -20,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate title
+      gsap.fromTo(
+        titleRef.current,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate description
+      gsap.fromTo(
+        descriptionRef.current,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate bento cards with stagger
+      gsap.fromTo(
+        gridRef.current?.querySelectorAll(".bento-card"),
+        {
+          opacity: 0,
+          scale: 0.9,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Parallax background
+      gsap.to(backgroundRef.current, {
+        y: -80,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+      }, sectionRef);
+
+      return () => ctx.revert();
+    });
+  }, []);
+
   return (
-    <section id="features" className="relative w-full overflow-hidden px-4 py-20 md:px-8">
-      <div className="relative mx-auto max-w-7xl">
+    <section ref={sectionRef} id="features" className="relative w-full overflow-hidden px-4 py-32 md:px-8">
+      {/* Animated Background */}
+      <div ref={backgroundRef} className="absolute inset-0 -z-10 overflow-hidden">
+      </div>
+
+      <div className="relative mx-auto max-w-7xl z-10">
         {/* Section Header */}
-        <div className="mb-12 flex flex-col items-center text-center">
-          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-            <Sparkles className="mr-2 size-4" />
+        <div ref={headerRef} className="mb-16 flex flex-col items-center text-center">
+          <div className="badge mb-4 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm px-4 py-1.5 text-sm font-medium text-primary">
+            <Layers className="mr-2 size-4" />
             Features
           </div>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl animate-in fade-in-50 slide-in-from-bottom-4 duration-700">
+          <h2 ref={titleRef} className="mb-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
             Everything you need to
             <br />
-            <span className="text-primary animate-pulse">boost productivity</span>
+            <span className="text-primary">boost productivity</span>
           </h2>
-          <p className="max-w-2xl text-lg text-muted-foreground animate-in fade-in-50 slide-in-from-bottom-4 duration-700 delay-300">
+          <p ref={descriptionRef} className="max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
             Luminite AI combines powerful task management with cutting-edge AI
             technology to help you work smarter and achieve more.
           </p>
         </div>
 
         {/* Bento Grid */}
-        <div className="animate-in fade-in-50 slide-in-from-bottom-4 duration-700 delay-500">
+        <div ref={gridRef}>
           <BentoGrid>
             {features.map((feature, idx) => (
-              <BentoCard key={idx} {...feature} />
+              <BentoCard key={idx} {...feature} className={cn(feature.className, "bento-card")} />
             ))}
           </BentoGrid>
         </div>

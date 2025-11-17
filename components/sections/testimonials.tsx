@@ -1,4 +1,7 @@
-import { Star } from "lucide-react";
+"use client";
+
+import { useEffect, useRef } from "react";
+import { Star, MessageCircle } from "lucide-react";
 import { Marquee } from "@/components/ui/marquee";
 
 /**
@@ -80,14 +83,13 @@ const TestimonialCard = ({
   avatar: string;
 }) => {
   return (
-    <div className="group relative w-[350px] cursor-pointer overflow-hidden rounded-xl border border-primary/20 bg-primary/5 p-6 shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-primary/10 hover:border-primary/30 hover:shadow-xl hover:scale-105">
+    <div className="testimonial-card group relative w-[350px] cursor-pointer overflow-hidden rounded-xl border border-primary/20 bg-primary/5 p-6 shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-primary/10 hover:border-primary/30 hover:shadow-xl hover:scale-105">
       {/* Rating Stars */}
       <div className="mb-4 flex gap-1">
         {Array.from({ length: rating }).map((_, i) => (
           <Star
             key={i}
-            className="size-4 fill-yellow-500 text-yellow-500 animate-pulse"
-            style={{ animationDelay: `${i * 0.1}s` }}
+            className="size-4 fill-yellow-500 text-yellow-500"
           />
         ))}
       </div>
@@ -97,7 +99,7 @@ const TestimonialCard = ({
 
       {/* Author Info */}
       <div className="flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground animate-pulse">
+        <div className="flex size-10 items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground">
           {avatar}
         </div>
         <div>
@@ -112,31 +114,162 @@ const TestimonialCard = ({
 };
 
 export function TestimonialsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+
   const firstRow = testimonials.slice(0, testimonials.length / 2);
   const secondRow = testimonials.slice(testimonials.length / 2);
 
+  useEffect(() => {
+    if (!sectionRef.current || !headerRef.current || !titleRef.current || !descriptionRef.current) return;
+
+    // Dynamic import GSAP untuk code splitting
+    Promise.all([
+      import("gsap"),
+      import("gsap/ScrollTrigger"),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      const gsap = gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.default;
+      
+      if (typeof window !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      const ctx = gsap.context(() => {
+      // Animate header badge
+      gsap.fromTo(
+        headerRef.current?.querySelector(".badge"),
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: -20,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate title
+      gsap.fromTo(
+        titleRef.current,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate description
+      gsap.fromTo(
+        descriptionRef.current,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate testimonial cards with stagger
+      if (marqueeRef.current) {
+        gsap.fromTo(
+          marqueeRef.current.querySelectorAll(".testimonial-card"),
+          {
+            opacity: 0,
+            scale: 0.9,
+            y: 50,
+          },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: marqueeRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      // Parallax background
+      gsap.to(backgroundRef.current, {
+        y: -80,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+      }, sectionRef);
+
+      return () => ctx.revert();
+    });
+  }, []);
+
   return (
-    <section id="testimonials" className="relative w-full overflow-hidden px-4 py-20 md:px-8">
-      <div className="relative mx-auto max-w-7xl">
+    <section ref={sectionRef} id="testimonials" className="relative w-full overflow-hidden px-4 py-32 md:px-8">
+      {/* Animated Background */}
+      <div ref={backgroundRef} className="absolute inset-0 -z-10 overflow-hidden">
+      </div>
+
+      <div className="relative mx-auto max-w-7xl z-10">
         {/* Section Header */}
-        <div className="mb-12 flex flex-col items-center text-center">
-          <div className="mb-4 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-            <Star className="mr-2 size-4 fill-yellow-500 text-yellow-500" />
+        <div ref={headerRef} className="mb-16 flex flex-col items-center text-center">
+          <div className="badge mb-4 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm px-4 py-1.5 text-sm font-medium text-primary">
+            <MessageCircle className="mr-2 size-4" />
             Testimonials
           </div>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl animate-in fade-in-50 slide-in-from-bottom-4 duration-700">
+          <h2 ref={titleRef} className="mb-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
             Loved by teams
             <br />
-            <span className="text-primary animate-pulse">around the world</span>
+            <span className="text-primary">around the world</span>
           </h2>
-          <p className="max-w-2xl text-lg text-muted-foreground animate-in fade-in-50 slide-in-from-bottom-4 duration-700 delay-300">
+          <p ref={descriptionRef} className="max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
             See what our customers have to say about their experience with
             Luminite AI.
           </p>
         </div>
 
         {/* Marquee Testimonials */}
-        <div className="relative flex flex-col gap-4">
+        <div ref={marqueeRef} className="relative flex flex-col gap-4">
           <Marquee pauseOnHover className="[--duration:40s]">
             {firstRow.map((testimonial, idx) => (
               <TestimonialCard key={idx} {...testimonial} />

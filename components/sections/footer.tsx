@@ -5,16 +5,18 @@ import { Badge } from "@/components/ui/badge";
 
 export function Footer() {
   return (
-    <footer className="bg-card border-t border-border/50">
+    <footer className="relative bg-card border-t border-border/50 z-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <span className="text-black font-bold text-sm">L</span>
-              </div>
+              <img 
+                src="/logo.svg" 
+                alt="Luminite AI Logo" 
+                className="w-8 h-8"
+              />
               <span className="text-xl font-bold text-white">
                 Luminite
               </span>
@@ -53,6 +55,10 @@ export function Footer() {
                 <a
                   href="#features"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Features
                 </a>
@@ -61,24 +67,36 @@ export function Footer() {
                 <a
                   href="#pricing"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Pricing
                 </a>
               </li>
               <li>
                 <a
-                  href="#integration"
+                  href="#testimonials"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
-                  Integrations
+                  Testimonials
                 </a>
               </li>
               <li>
                 <a
-                  href="#api"
+                  href="#qna"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('qna')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
-                  API
+                  FAQ
                 </a>
               </li>
             </ul>
@@ -90,7 +108,9 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="#about"
+                  href="https://luminite-ai.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   About
@@ -98,7 +118,9 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#blog"
+                  href="https://luminite-ai.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Blog
@@ -106,7 +128,9 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#careers"
+                  href="https://luminite-ai.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Careers
@@ -114,7 +138,9 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#contact"
+                  href="https://luminite-ai.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Contact
@@ -129,15 +155,21 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="#help"
+                  href="#qna"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('qna')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   Help Center
                 </a>
               </li>
               <li>
                 <a
-                  href="#docs"
+                  href="https://luminite-ai.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Documentation
@@ -145,7 +177,9 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#status"
+                  href="https://luminite-ai.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Status
@@ -153,7 +187,9 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#security"
+                  href="https://luminite-ai.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Security

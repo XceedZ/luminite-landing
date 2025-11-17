@@ -1,6 +1,7 @@
 "use client";
 
-import { CheckCircle2, ArrowRight } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { CheckCircle2, ArrowRight, CreditCard } from "lucide-react";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { RippleButton } from "@/components/ui/ripple-button";
 import { cn } from "@/lib/utils";
@@ -40,7 +41,7 @@ const PricingCard: FC<PricingCardProps> = ({
   buttonText,
   isFeatured = false,
 }) => (
-  <div className="relative pt-8">
+  <div className="pricing-card relative pt-8">
     {isFeatured && (
       <div className="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20">
       </div>
@@ -105,27 +106,163 @@ const PricingCard: FC<PricingCardProps> = ({
 
 // --- PricingSection ---
 export const PricingSection: FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const backgroundRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
   const plans: PricingCardProps[] = [
     { planName: "Free", price: "$0", priceDescription: "/ month", description: "For individuals & hobbyists getting started.", features: ["Up to 1,000 tasks", "Basic AI assistance", "Community support", "2 active projects"], buttonText: "Start for Free" },
     { planName: "Pro", price: "$15", priceDescription: "/ user / month", description: "For professionals and teams needing more power.", features: ["Unlimited tasks", "Advanced AI assistance", "Priority email support", "Unlimited projects", "Team collaboration"], buttonText: "Upgrade to Pro", isFeatured: true },
     { planName: "Enterprise", price: "Custom", priceDescription: "", description: "For large organizations with custom needs.", features: ["Everything in Pro, plus:", "Dedicated account manager", "Single Sign-On (SSO)", "Custom integrations", "Advanced security"], buttonText: "Contact Sales" },
   ];
 
+  useEffect(() => {
+    if (!sectionRef.current || !headerRef.current || !titleRef.current || !descriptionRef.current) return;
+
+    // Dynamic import GSAP untuk code splitting
+    Promise.all([
+      import("gsap"),
+      import("gsap/ScrollTrigger"),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      const gsap = gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.default;
+      
+      if (typeof window !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      const ctx = gsap.context(() => {
+      // Animate header badge
+      gsap.fromTo(
+        headerRef.current?.querySelector(".badge"),
+        {
+          opacity: 0,
+          scale: 0.8,
+          y: -20,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate title
+      gsap.fromTo(
+        titleRef.current,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate description
+      gsap.fromTo(
+        descriptionRef.current,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate pricing cards with stagger
+      if (cardsRef.current) {
+        gsap.fromTo(
+          cardsRef.current.querySelectorAll(".pricing-card"),
+          {
+            opacity: 0,
+            scale: 0.9,
+            y: 50,
+          },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      // Parallax background
+      gsap.to(backgroundRef.current, {
+        y: -80,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+      }, sectionRef);
+
+      return () => ctx.revert();
+    });
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="pricing"
-      className="relative w-full overflow-hidden px-4 py-20 md:px-8"
+      className="relative w-full overflow-hidden px-4 py-32 md:px-8"
     >
-      <div className="relative mx-auto max-w-7xl">
-        <div className="mb-16 flex flex-col items-center text-center">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+      {/* Animated Background */}
+      <div ref={backgroundRef} className="absolute inset-0 -z-10 overflow-hidden">
+      </div>
+
+      <div className="relative mx-auto max-w-7xl z-10">
+        <div ref={headerRef} className="mb-16 flex flex-col items-center text-center">
+          <div className="badge mb-4 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm px-4 py-1.5 text-sm font-medium text-primary">
+            <CreditCard className="mr-2 size-4" />
+            Pricing
+          </div>
+          <h2 ref={titleRef} className="mb-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-6xl">
             Choose the right plan for you
           </h2>
-          <p className="max-w-2xl text-lg text-muted-foreground">
+          <p ref={descriptionRef} className="max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
             Start for free, then upgrade as you grow. All plans include our powerful AI features.
           </p>
         </div>
-        <div className="grid grid-cols-1 items-stretch gap-8 pt-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+        <div ref={cardsRef} className="grid grid-cols-1 items-stretch gap-8 pt-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {plans.map((plan) => (
             <PricingCard key={plan.planName} {...plan} />
           ))}

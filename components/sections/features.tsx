@@ -180,26 +180,29 @@ export function FeaturesSection() {
 
       const ctx = gsap.context(() => {
       // Animate header badge
-      gsap.fromTo(
-        headerRef.current?.querySelector(".badge"),
-        {
-          opacity: 0,
-          scale: 0.8,
-          y: -20,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
+      const badgeElement = headerRef.current?.querySelector(".badge");
+      if (badgeElement) {
+        gsap.fromTo(
+          badgeElement,
+          {
+            opacity: 0,
+            scale: 0.8,
+            y: -20,
           },
-        }
-      );
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
 
       // Animate title
       gsap.fromTo(
@@ -243,38 +246,43 @@ export function FeaturesSection() {
       );
 
       // Animate bento cards with stagger
-      gsap.fromTo(
-        gridRef.current?.querySelectorAll(".bento-card"),
-        {
-          opacity: 0,
-          scale: 0.9,
-          y: 50,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
+      const bentoCards = gridRef.current?.querySelectorAll(".bento-card");
+      if (bentoCards && bentoCards.length > 0) {
+        gsap.fromTo(
+          bentoCards,
+          {
+            opacity: 0,
+            scale: 0.9,
+            y: 50,
           },
-        }
-      );
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 70%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
 
       // Parallax background
-      gsap.to(backgroundRef.current, {
-        y: -80,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
+      if (backgroundRef.current) {
+        gsap.to(backgroundRef.current, {
+          y: -80,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      }
       }, sectionRef);
 
       return () => ctx.revert();

@@ -35,26 +35,29 @@ export function CTASection() {
 
       const ctx = gsap.context(() => {
       // Animate header badge
-      gsap.fromTo(
-        headerRef.current?.querySelector(".badge"),
-        {
-          opacity: 0,
-          scale: 0.8,
-          y: -20,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
+      const badgeElement = headerRef.current?.querySelector(".badge");
+      if (badgeElement) {
+        gsap.fromTo(
+          badgeElement,
+          {
+            opacity: 0,
+            scale: 0.8,
+            y: -20,
           },
-        }
-      );
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
 
       // Animate title
       gsap.fromTo(
@@ -145,15 +148,17 @@ export function CTASection() {
       }
 
       // Parallax background
-      gsap.to(backgroundRef.current, {
-        y: -80,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
+      if (backgroundRef.current) {
+        gsap.to(backgroundRef.current, {
+          y: -80,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      }
       }, sectionRef);
 
       return () => ctx.revert();

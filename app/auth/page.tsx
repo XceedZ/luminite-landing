@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Github, Mail, Lock, User, ArrowRight, AtSign, X, Check, Plus, Wand2, Loader2, ArrowUp } from "lucide-react";
+import { Github, Mail, Lock, User, ArrowRight, ArrowLeft, AtSign, X, Check, Plus, Wand2, Loader2, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   InputGroup,
@@ -28,6 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function AuthPage() {
+  const router = useRouter();
   const [isSignIn, setIsSignIn] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -240,6 +242,19 @@ export default function AuthPage() {
     <div className="flex min-h-screen w-full">
       {/* Left Side - AIInputSection atau Code Block */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-background items-center justify-center p-12">
+        <div ref={logoRef} className="absolute top-10 left-12 flex items-center space-x-2">
+          <img
+            src="/logo.svg"
+            alt="Luminite AI Logo"
+            className="w-8 h-8"
+          />
+          <span className="text-xl font-bold text-white">
+            Luminite
+          </span>
+          <span className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary border border-primary/30">
+            AI
+          </span>
+        </div>
         {/* Grid Background */}
         <div
           className="absolute inset-0 opacity-10 pointer-events-none"
@@ -408,9 +423,19 @@ export default function AuthPage() {
       {/* Right Side - Form */}
       <div className="flex-1 flex flex-col bg-background p-8 lg:p-12">
         <div className="w-full max-w-md mx-auto flex-1 flex flex-col justify-center">
-          {/* Logo dan Welcome Message - Pojok Kiri Atas */}
           <div className="mb-8">
-            <div ref={logoRef} className="flex items-center space-x-2 mb-6">
+            <div className="flex justify-end mb-6">
+              <Button
+                type="button"
+                variant="outline"
+                className="h-10 gap-2"
+                onClick={() => router.push("/")}
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back
+              </Button>
+            </div>
+            <div className="lg:hidden flex items-center space-x-2 mb-6">
               <img
                 src="/logo.svg"
                 alt="Luminite AI Logo"
@@ -436,11 +461,14 @@ export default function AuthPage() {
           </div>
 
           {/* OAuth Buttons */}
-          <div ref={oauthButtonsRef} className="space-y-3 mb-6">
+          <div
+            ref={oauthButtonsRef}
+            className="mb-6 flex flex-col gap-3 sm:flex-row"
+          >
             <Button
               type="button"
               variant="outline"
-              className="w-full justify-center gap-2 h-11"
+              className="w-full justify-center gap-2 h-11 flex-1"
               onClick={() => {
                 console.log("GitHub OAuth");
               }}
@@ -451,7 +479,7 @@ export default function AuthPage() {
             <Button
               type="button"
               variant="outline"
-              className="w-full justify-center gap-2 h-11"
+              className="w-full justify-center gap-2 h-11 flex-1"
               onClick={() => {
                 console.log("Google OAuth");
               }}

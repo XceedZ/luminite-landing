@@ -5,13 +5,6 @@ import { AnimatedBeam } from "@/components/ui/animated-beam";
 import { cn } from "@/lib/utils";
 import { Workflow } from "lucide-react";
 import { MagicCard } from "@/components/ui/magic-card";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Register GSAP plugins
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 // URL Logo Aplikasi
 const logos = {
@@ -67,179 +60,207 @@ export function IntegrationSection() {
   const circleRefs = [div1Ref, div2Ref, div3Ref, div4Ref, div5Ref, div6Ref, div7Ref];
 
   useEffect(() => {
-    if (!sectionRef.current || !headerRef.current || !titleRef.current || !descriptionRef.current || !containerRef.current) return;
+    if (!sectionRef.current || !headerRef.current || !titleRef.current || !descriptionRef.current || !containerRef.current) {
+      return;
+    }
 
-    const ctx = gsap.context(() => {
-      // Animate header badge
-      const badgeElement = headerRef.current?.querySelector(".badge");
-      if (badgeElement) {
-        gsap.fromTo(
-          badgeElement,
-          {
-            opacity: 0,
-            scale: 0.8,
-            y: -20,
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "back.out(1.7)",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
+    let cleanup: (() => void) | undefined;
+    let isMounted = true;
+
+    const setupAnimations = async () => {
+      const [gsapModule, scrollTriggerModule] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+      ]);
+
+      if (!isMounted) return;
+
+      const gsap = gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.default;
+
+      if (typeof window !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
       }
 
-      // Animate title
-      gsap.fromTo(
-        titleRef.current,
-        {
-          opacity: 0,
-          y: 50,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Animate description
-      gsap.fromTo(
-        descriptionRef.current,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          delay: 0.2,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 75%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Animate circles with stagger and scale
-      circleRefs.forEach((ref, index) => {
-        if (ref.current) {
+      const ctx = gsap.context(() => {
+        // Animate header badge
+        const badgeElement = headerRef.current?.querySelector(".badge");
+        if (badgeElement) {
           gsap.fromTo(
-            ref.current,
+            badgeElement,
             {
               opacity: 0,
-              scale: 0,
-              rotation: -180,
+              scale: 0.8,
+              y: -20,
             },
             {
               opacity: 1,
               scale: 1,
-              rotation: 0,
-              duration: 0.8,
+              y: 0,
+              duration: 0.6,
               ease: "back.out(1.7)",
-              delay: index * 0.1,
               scrollTrigger: {
-                trigger: containerRef.current,
-                start: "top 80%",
+                trigger: sectionRef.current,
+                start: "top 85%",
                 toggleActions: "play none none reverse",
               },
             }
           );
-
-          // Hover animation for circles
-          ref.current.addEventListener("mouseenter", () => {
-            gsap.to(ref.current, {
-              scale: 1.2,
-              rotation: 360,
-              duration: 0.5,
-              ease: "power2.out",
-            });
-          });
-
-          ref.current.addEventListener("mouseleave", () => {
-            gsap.to(ref.current, {
-              scale: 1,
-              rotation: 0,
-              duration: 0.5,
-              ease: "power2.out",
-            });
-          });
         }
-      });
 
-      // Animate container
-      gsap.fromTo(
-        containerRef.current,
-        {
-          opacity: 0,
-          y: 50,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 75%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Animate integration cards with stagger
-      if (cardsRef.current) {
+        // Animate title
         gsap.fromTo(
-          cardsRef.current.querySelectorAll(".integration-card"),
+          titleRef.current,
           {
             opacity: 0,
-            scale: 0.9,
             y: 50,
           },
           {
             opacity: 1,
-            scale: 1,
             y: 0,
-            duration: 0.8,
+            duration: 1,
             ease: "power3.out",
-            stagger: 0.15,
             scrollTrigger: {
-              trigger: cardsRef.current,
+              trigger: sectionRef.current,
               start: "top 80%",
               toggleActions: "play none none reverse",
             },
           }
         );
-      }
 
-      // Parallax background
-      gsap.to(backgroundRef.current, {
-        y: -80,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-    }, sectionRef);
+        // Animate description
+        gsap.fromTo(
+          descriptionRef.current,
+          {
+            opacity: 0,
+            y: 30,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 0.2,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
 
-    return () => ctx.revert();
+        // Animate circles with stagger and scale
+        circleRefs.forEach((ref, index) => {
+          if (ref.current) {
+            gsap.fromTo(
+              ref.current,
+              {
+                opacity: 0,
+                scale: 0,
+                rotation: -180,
+              },
+              {
+                opacity: 1,
+                scale: 1,
+                rotation: 0,
+                duration: 0.8,
+                ease: "back.out(1.7)",
+                delay: index * 0.1,
+                scrollTrigger: {
+                  trigger: containerRef.current,
+                  start: "top 80%",
+                  toggleActions: "play none none reverse",
+                },
+              }
+            );
+
+            // Hover animation for circles
+            ref.current.addEventListener("mouseenter", () => {
+              gsap.to(ref.current, {
+                scale: 1.2,
+                rotation: 360,
+                duration: 0.5,
+                ease: "power2.out",
+              });
+            });
+
+            ref.current.addEventListener("mouseleave", () => {
+              gsap.to(ref.current, {
+                scale: 1,
+                rotation: 0,
+                duration: 0.5,
+                ease: "power2.out",
+              });
+            });
+          }
+        });
+
+        // Animate container
+        gsap.fromTo(
+          containerRef.current,
+          {
+            opacity: 0,
+            y: 50,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 75%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        // Animate integration cards with stagger
+        if (cardsRef.current) {
+          gsap.fromTo(
+            cardsRef.current.querySelectorAll(".integration-card"),
+            {
+              opacity: 0,
+              scale: 0.9,
+              y: 50,
+            },
+            {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+              stagger: 0.15,
+              scrollTrigger: {
+                trigger: cardsRef.current,
+                start: "top 80%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+
+        // Parallax background
+        gsap.to(backgroundRef.current, {
+          y: -80,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      }, sectionRef);
+
+      cleanup = () => ctx.revert();
+    };
+
+    setupAnimations();
+
+    return () => {
+      isMounted = false;
+      cleanup?.();
+    };
   }, []);
 
   return (

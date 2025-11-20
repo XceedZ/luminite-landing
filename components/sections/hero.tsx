@@ -354,6 +354,22 @@ export function HeroSection() {
         />
       </div>
 
+      {/* Floating White Blur Circles Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Circle 1 */}
+        <div className="absolute top-[10%] left-[15%] w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float-1" />
+        {/* Circle 2 */}
+        <div className="absolute top-[30%] right-[20%] w-80 h-80 bg-white/8 rounded-full blur-3xl animate-float-2" />
+        {/* Circle 3 */}
+        <div className="absolute bottom-[20%] left-[25%] w-72 h-72 bg-white/12 rounded-full blur-3xl animate-float-3" />
+        {/* Circle 4 */}
+        <div className="absolute bottom-[40%] right-[15%] w-56 h-56 bg-white/10 rounded-full blur-3xl animate-float-4" />
+        {/* Circle 5 */}
+        <div className="absolute top-[50%] left-[50%] w-96 h-96 bg-white/6 rounded-full blur-3xl animate-float-5" />
+        {/* Circle 6 */}
+        <div className="absolute top-[15%] right-[40%] w-48 h-48 bg-white/9 rounded-full blur-3xl animate-float-6" />
+      </div>
+
       {/* Kontainer Konten Utama */}
       <div className="relative z-10 flex w-full max-w-5xl flex-col items-center gap-8 text-center">
         {/* Badge dengan AnimatedShinyText */}

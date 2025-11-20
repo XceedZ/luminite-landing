@@ -1,51 +1,12 @@
-"use client";
-
-import dynamic from "next/dynamic";
-
-const TopBar = dynamic(() => import("@/components/sections/topbar").then((mod) => mod.TopBar), {
-  ssr: false,
-});
-
-const HeroSection = dynamic(() => import("@/components/sections/hero").then((mod) => mod.HeroSection), {
-  ssr: false,
-});
-
-const TrustedBy = dynamic(() => import("@/components/sections/trustedby").then((mod) => mod.TrustedBy), {
-  ssr: false,
-});
-
-const FeaturesSection = dynamic(
-  () => import("@/components/sections/features").then((mod) => mod.FeaturesSection),
-  {
-    ssr: false,
-  }
-);
-
-const QNASection = dynamic(() => import("@/components/sections/qna").then((mod) => mod.QNASection), {
-  ssr: false,
-});
-
-const TestimonialsSection = dynamic(
-  () => import("@/components/sections/testimonials").then((mod) => mod.TestimonialsSection),
-  {
-    ssr: false,
-  }
-);
-
-const PricingSection = dynamic(
-  () => import("@/components/sections/pricing").then((mod) => mod.PricingSection),
-  {
-    ssr: false,
-  }
-);
-
-const CTASection = dynamic(() => import("@/components/sections/cta").then((mod) => mod.CTASection), {
-  ssr: false,
-});
-
-const Footer = dynamic(() => import("@/components/sections/footer").then((mod) => mod.Footer), {
-  ssr: false,
-});
+import { TopBar } from "@/components/sections/topbar";
+import { HeroSection } from "@/components/sections/hero";
+import { TrustedBy } from "@/components/sections/trustedby";
+import { FeaturesSection } from "@/components/sections/features";
+import { QNASection } from "@/components/sections/qna";
+import { TestimonialsSection } from "@/components/sections/testimonials";
+import { PricingSection } from "@/components/sections/pricing";
+import { CTASection } from "@/components/sections/cta";
+import { Footer } from "@/components/sections/footer";
 
 /**
  * Luminite AI Landing Page

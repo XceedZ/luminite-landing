@@ -28,12 +28,12 @@ export default function Home() {
       
       {/* Global Glowing Orbs - menyatu dengan semua section */}
       <div className="fixed inset-0 -z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[10%] left-[15%] w-96 h-96 bg-primary/8 rounded-full blur-3xl animate-float-1" />
-        <div className="absolute top-[30%] right-[20%] w-80 h-80 bg-primary/6 rounded-full blur-3xl animate-float-2" />
-        <div className="absolute bottom-[20%] left-[25%] w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float-3" />
-        <div className="absolute bottom-[40%] right-[15%] w-96 h-96 bg-primary/8 rounded-full blur-3xl animate-float-4" />
-        <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/6 rounded-full blur-3xl animate-float-5" />
-        <div className="absolute top-[15%] right-[40%] w-80 h-80 bg-primary/7 rounded-full blur-3xl animate-float-6" />
+        <div className="absolute top-[10%] left-[15%] w-96 h-96 rounded-full blur-3xl orb-1 orb-delay-0" />
+        <div className="absolute top-[30%] right-[20%] w-80 h-80 rounded-full blur-3xl orb-2 orb-delay-1" />
+        <div className="absolute bottom-[20%] left-[25%] w-72 h-72 rounded-full blur-3xl orb-3 orb-delay-2" />
+        <div className="absolute bottom-[40%] right-[15%] w-96 h-96 rounded-full blur-3xl orb-4 orb-delay-0-5" />
+        <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl orb-5 orb-delay-1-5" />
+        <div className="absolute top-[15%] right-[40%] w-80 h-80 rounded-full blur-3xl orb-6 orb-delay-0-3" />
       </div>
       
       <TopBar />

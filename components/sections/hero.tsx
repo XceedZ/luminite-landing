@@ -230,14 +230,18 @@ export function HeroSection() {
         gsap.registerPlugin(ScrollTrigger);
       }
 
+      // Optimasi global GSAP
+      gsap.config({ nullTargetWarn: false });
+
       const ctx = gsap.context(() => {
-      // Animate badge
+      // Animate badge dengan optimasi
       gsap.fromTo(
         badgeRef.current,
         {
           opacity: 0,
           scale: 0.8,
           y: -30,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -246,15 +250,17 @@ export function HeroSection() {
           duration: 0.8,
           ease: "back.out(1.7)",
           delay: 0.2,
+          force3D: true,
         }
       );
 
-      // Animate headline with split text effect
+      // Animate headline dengan optimasi
       gsap.fromTo(
         titleRef.current,
         {
           opacity: 0,
           y: 80,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -262,15 +268,17 @@ export function HeroSection() {
           duration: 1.2,
           ease: "power4.out",
           delay: 0.4,
+          force3D: true,
         }
       );
 
-      // Animate description
+      // Animate description dengan optimasi
       gsap.fromTo(
         descriptionRef.current,
         {
           opacity: 0,
           y: 40,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -278,10 +286,11 @@ export function HeroSection() {
           duration: 1,
           ease: "power3.out",
           delay: 0.8,
+          force3D: true,
         }
       );
 
-      // Animate buttons with stagger
+      // Animate buttons dengan optimasi
       if (buttonsRef.current) {
         gsap.fromTo(
           buttonsRef.current.children,
@@ -289,6 +298,7 @@ export function HeroSection() {
             opacity: 0,
             y: 30,
             scale: 0.9,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -298,11 +308,12 @@ export function HeroSection() {
             ease: "back.out(1.4)",
             stagger: 0.15,
             delay: 1.2,
+            force3D: true,
           }
         );
       }
 
-      // Animate input section
+      // Animate input section dengan optimasi
       if (inputRef.current) {
         gsap.fromTo(
           inputRef.current,
@@ -310,6 +321,7 @@ export function HeroSection() {
             opacity: 0,
             y: 50,
             scale: 0.95,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -318,19 +330,23 @@ export function HeroSection() {
             duration: 1,
             ease: "power3.out",
             delay: 1.6,
+            force3D: true,
           }
         );
       }
 
-      // Parallax effect for particles
+      // Parallax effect dengan optimasi scrub
       if (particlesRef.current) {
         gsap.to(particlesRef.current, {
           y: -100,
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top top",
             end: "bottom top",
-            scrub: 1,
+            scrub: true,
+            markers: false,
+            invalidateOnRefresh: false,
           },
         });
       }
@@ -352,22 +368,6 @@ export function HeroSection() {
           staticity={50}
           refresh
         />
-      </div>
-
-      {/* Floating White Blur Circles Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Circle 1 */}
-        <div className="absolute top-[10%] left-[15%] w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float-1" />
-        {/* Circle 2 */}
-        <div className="absolute top-[30%] right-[20%] w-80 h-80 bg-white/8 rounded-full blur-3xl animate-float-2" />
-        {/* Circle 3 */}
-        <div className="absolute bottom-[20%] left-[25%] w-72 h-72 bg-white/12 rounded-full blur-3xl animate-float-3" />
-        {/* Circle 4 */}
-        <div className="absolute bottom-[40%] right-[15%] w-56 h-56 bg-white/10 rounded-full blur-3xl animate-float-4" />
-        {/* Circle 5 */}
-        <div className="absolute top-[50%] left-[50%] w-96 h-96 bg-white/6 rounded-full blur-3xl animate-float-5" />
-        {/* Circle 6 */}
-        <div className="absolute top-[15%] right-[40%] w-48 h-48 bg-white/9 rounded-full blur-3xl animate-float-6" />
       </div>
 
       {/* Kontainer Konten Utama */}

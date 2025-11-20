@@ -132,10 +132,11 @@ export const PricingSection: FC = () => {
       
       if (typeof window !== "undefined") {
         gsap.registerPlugin(ScrollTrigger);
+        gsap.config({ nullTargetWarn: false });
       }
 
       const ctx = gsap.context(() => {
-      // Animate header badge
+      // Animate header badge dengan optimasi
       const badgeElement = headerRef.current?.querySelector(".badge");
       if (badgeElement) {
         gsap.fromTo(
@@ -144,6 +145,7 @@ export const PricingSection: FC = () => {
             opacity: 0,
             scale: 0.8,
             y: -20,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -151,41 +153,49 @@ export const PricingSection: FC = () => {
             y: 0,
             duration: 0.6,
             ease: "back.out(1.7)",
+            force3D: true,
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top 85%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
       }
 
-      // Animate title
+      // Animate title dengan optimasi
       gsap.fromTo(
         titleRef.current,
         {
           opacity: 0,
           y: 50,
+          force3D: true,
         },
         {
           opacity: 1,
           y: 0,
           duration: 1,
           ease: "power3.out",
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 80%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate description
+      // Animate description dengan optimasi
       gsap.fromTo(
         descriptionRef.current,
         {
           opacity: 0,
           y: 30,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -193,15 +203,18 @@ export const PricingSection: FC = () => {
           duration: 0.8,
           ease: "power2.out",
           delay: 0.2,
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 75%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate pricing cards with stagger
+      // Animate pricing cards dengan optimasi
       if (cardsRef.current) {
         gsap.fromTo(
           cardsRef.current.querySelectorAll(".pricing-card"),
@@ -209,6 +222,7 @@ export const PricingSection: FC = () => {
             opacity: 0,
             scale: 0.9,
             y: 50,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -217,25 +231,33 @@ export const PricingSection: FC = () => {
             duration: 0.8,
             ease: "power3.out",
             stagger: 0.15,
+            force3D: true,
             scrollTrigger: {
               trigger: cardsRef.current,
               start: "top 80%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
       }
 
-      // Parallax background
+      // Parallax background dengan optimasi scrub
+      if (backgroundRef.current) {
       gsap.to(backgroundRef.current, {
         y: -80,
+          force3D: true,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top bottom",
           end: "bottom top",
-          scrub: 1,
+            scrub: true,
+            markers: false,
+            invalidateOnRefresh: false,
         },
       });
+      }
       }, sectionRef);
 
       return () => ctx.revert();

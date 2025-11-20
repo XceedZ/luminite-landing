@@ -63,10 +63,11 @@ export function QNASection() {
       
       if (typeof window !== "undefined") {
         gsap.registerPlugin(ScrollTrigger);
+        gsap.config({ nullTargetWarn: false });
       }
 
       const ctx = gsap.context(() => {
-      // Animate header badge
+      // Animate header badge dengan optimasi
       const badgeElement = headerRef.current?.querySelector(".badge");
       if (badgeElement) {
         gsap.fromTo(
@@ -75,6 +76,7 @@ export function QNASection() {
             opacity: 0,
             scale: 0.8,
             y: -20,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -82,41 +84,49 @@ export function QNASection() {
             y: 0,
             duration: 0.6,
             ease: "back.out(1.7)",
+            force3D: true,
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top 85%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
       }
 
-      // Animate title
+      // Animate title dengan optimasi
       gsap.fromTo(
         titleRef.current,
         {
           opacity: 0,
           y: 50,
+          force3D: true,
         },
         {
           opacity: 1,
           y: 0,
           duration: 1,
           ease: "power3.out",
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 80%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate description
+      // Animate description dengan optimasi
       gsap.fromTo(
         descriptionRef.current,
         {
           opacity: 0,
           y: 30,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -124,21 +134,25 @@ export function QNASection() {
           duration: 0.8,
           ease: "power2.out",
           delay: 0.2,
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 75%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate accordion items with stagger
+      // Animate accordion items dengan optimasi
       if (accordionRef.current) {
         gsap.fromTo(
           accordionRef.current.querySelectorAll("[data-slot='accordion-item']"),
           {
             opacity: 0,
             y: 30,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -146,25 +160,33 @@ export function QNASection() {
             duration: 0.6,
             ease: "power2.out",
             stagger: 0.1,
+            force3D: true,
             scrollTrigger: {
               trigger: accordionRef.current,
               start: "top 80%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
       }
 
-      // Parallax background
+      // Parallax background dengan optimasi scrub
+      if (backgroundRef.current) {
       gsap.to(backgroundRef.current, {
         y: -80,
+          force3D: true,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top bottom",
           end: "bottom top",
-          scrub: 1,
+            scrub: true,
+            markers: false,
+            invalidateOnRefresh: false,
         },
       });
+      }
       }, sectionRef);
 
       return () => ctx.revert();

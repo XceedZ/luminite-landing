@@ -67,37 +67,43 @@ export const TrustedBy: FC = () => {
       
       if (typeof window !== "undefined") {
         gsap.registerPlugin(ScrollTrigger);
+        gsap.config({ nullTargetWarn: false });
       }
 
       const ctx = gsap.context(() => {
-        // Animate title on scroll
+        // Animate title dengan optimasi
         gsap.fromTo(
           titleRef.current,
           {
             opacity: 0,
             y: 50,
+            force3D: true,
           },
           {
             opacity: 1,
             y: 0,
             duration: 1,
             ease: "power3.out",
+            force3D: true,
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top 80%",
               end: "top 50%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
 
-        // Animate logo items with stagger
+        // Animate logo items dengan optimasi
         gsap.fromTo(
           ".logo-item",
           {
             opacity: 0,
             scale: 0.8,
             y: 30,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -106,26 +112,34 @@ export const TrustedBy: FC = () => {
             duration: 0.6,
             ease: "back.out(1.7)",
             stagger: 0.1,
+            force3D: true,
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top 70%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
 
-        // Parallax effect for background
+        // Parallax effect dengan optimasi scrub
+        if (backgroundRef.current) {
         gsap.to(backgroundRef.current, {
           y: -100,
+            force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top bottom",
             end: "bottom top",
-            scrub: 1,
+              scrub: true,
+              markers: false,
+              invalidateOnRefresh: false,
           },
         });
+        }
 
-        // Floating particles animation
+        // Floating particles animation dengan optimasi
         const particles = backgroundRef.current?.querySelectorAll(".particle");
         if (particles) {
           particles.forEach((particle, index) => {
@@ -136,11 +150,14 @@ export const TrustedBy: FC = () => {
               duration: 10 + index * 2,
               repeat: -1,
               ease: "none",
+              force3D: true,
               scrollTrigger: {
                 trigger: sectionRef.current,
                 start: "top bottom",
                 end: "bottom top",
                 scrub: true,
+                markers: false,
+                invalidateOnRefresh: false,
               },
             });
           });

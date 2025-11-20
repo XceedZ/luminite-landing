@@ -69,8 +69,13 @@ export function IntegrationSection() {
   useEffect(() => {
     if (!sectionRef.current || !headerRef.current || !titleRef.current || !descriptionRef.current || !containerRef.current) return;
 
+    // Optimasi global GSAP
+    if (typeof window !== "undefined") {
+      gsap.config({ nullTargetWarn: false });
+    }
+
     const ctx = gsap.context(() => {
-      // Animate header badge
+      // Animate header badge dengan optimasi
       const badgeElement = headerRef.current?.querySelector(".badge");
       if (badgeElement) {
         gsap.fromTo(
@@ -79,64 +84,78 @@ export function IntegrationSection() {
             opacity: 0,
             scale: 0.8,
             y: -20,
+            force3D: true,
           },
           {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "back.out(1.7)",
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "back.out(1.7)",
+              force3D: true,
             scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 85%",
+                trigger: sectionRef.current,
+                start: "top 85%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
-      }
+          }
 
-      // Animate title
+      // Animate title dengan optimasi
       gsap.fromTo(
         titleRef.current,
         {
           opacity: 0,
           y: 50,
+          force3D: true,
         },
         {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
+              opacity: 1,
+              y: 0,
+              duration: 1,
+              ease: "power3.out",
+              force3D: true,
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
+                trigger: sectionRef.current,
+                start: "top 80%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate description
+      // Animate description dengan optimasi
       gsap.fromTo(
         descriptionRef.current,
         {
           opacity: 0,
           y: 30,
+          force3D: true,
         },
         {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          delay: 0.2,
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power2.out",
+              delay: 0.2,
+              force3D: true,
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 75%",
+                trigger: sectionRef.current,
+                start: "top 75%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate circles with stagger and scale
+      // Animate circles dengan optimasi dan cleanup event listeners
+      const hoverHandlers: Array<{ element: HTMLElement; enter: () => void; leave: () => void }> = [];
+      
       circleRefs.forEach((ref, index) => {
         if (ref.current) {
           gsap.fromTo(
@@ -145,6 +164,7 @@ export function IntegrationSection() {
               opacity: 0,
               scale: 0,
               rotation: -180,
+              force3D: true,
             },
             {
               opacity: 1,
@@ -153,56 +173,74 @@ export function IntegrationSection() {
               duration: 0.8,
               ease: "back.out(1.7)",
               delay: index * 0.1,
+              force3D: true,
               scrollTrigger: {
                 trigger: containerRef.current,
                 start: "top 80%",
                 toggleActions: "play none none reverse",
+                markers: false,
+                invalidateOnRefresh: false,
               },
             }
           );
 
-          // Hover animation for circles
-          ref.current.addEventListener("mouseenter", () => {
+          // Hover animation dengan optimasi
+          const enterHandler = () => {
             gsap.to(ref.current, {
               scale: 1.2,
               rotation: 360,
               duration: 0.5,
               ease: "power2.out",
+              force3D: true,
             });
-          });
+          };
 
-          ref.current.addEventListener("mouseleave", () => {
+          const leaveHandler = () => {
             gsap.to(ref.current, {
               scale: 1,
               rotation: 0,
               duration: 0.5,
               ease: "power2.out",
+              force3D: true,
             });
+          };
+
+          ref.current.addEventListener("mouseenter", enterHandler);
+          ref.current.addEventListener("mouseleave", leaveHandler);
+          
+          hoverHandlers.push({
+            element: ref.current,
+            enter: enterHandler,
+            leave: leaveHandler,
           });
         }
       });
 
-      // Animate container
+      // Animate container dengan optimasi
       gsap.fromTo(
         containerRef.current,
         {
           opacity: 0,
           y: 50,
+          force3D: true,
         },
         {
           opacity: 1,
           y: 0,
           duration: 1,
           ease: "power3.out",
+          force3D: true,
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top 75%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate integration cards with stagger
+      // Animate integration cards dengan optimasi
       if (cardsRef.current) {
         gsap.fromTo(
           cardsRef.current.querySelectorAll(".integration-card"),
@@ -210,33 +248,50 @@ export function IntegrationSection() {
             opacity: 0,
             scale: 0.9,
             y: 50,
+            force3D: true,
           },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.15,
+            {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+              stagger: 0.15,
+            force3D: true,
             scrollTrigger: {
-              trigger: cardsRef.current,
-              start: "top 80%",
+                trigger: cardsRef.current,
+                start: "top 80%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
-          }
-        );
+            }
+          );
+        }
+
+      // Parallax background dengan optimasi scrub
+      if (backgroundRef.current) {
+        gsap.to(backgroundRef.current, {
+          y: -80,
+          force3D: true,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            markers: false,
+            invalidateOnRefresh: false,
+          },
+        });
       }
 
-      // Parallax background
-      gsap.to(backgroundRef.current, {
-        y: -80,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
+      // Cleanup function untuk event listeners
+    return () => {
+        hoverHandlers.forEach(({ element, enter, leave }) => {
+          element.removeEventListener("mouseenter", enter);
+          element.removeEventListener("mouseleave", leave);
+        });
+    };
     }, sectionRef);
 
     return () => ctx.revert();

@@ -13,24 +13,80 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Luminite AI - All-in-One AI-Powered Task Management",
+  metadataBase: new URL("https://luminite-ai.vercel.app"),
+  title: {
+    default: "Luminite AI - All-in-One AI App",
+    template: "%s | Luminite AI",
+  },
   description:
-    "Transform your productivity with Luminite AI. Intelligent task management seamlessly integrated with AI and knowledge databases. Streamline workflows and work smarter.",
+    "Transform your productivity with Luminite AI. The ultimate all-in-one AI application that combines intelligent automation, knowledge management, and AI-powered tools in a single unified platform. Streamline workflows and work smarter with cutting-edge AI technology.",
   keywords: [
-    "task management",
-    "AI",
+    "AI app",
+    "all-in-one AI",
+    "artificial intelligence",
     "productivity",
     "knowledge base",
     "workflow automation",
-    "project management",
-    "artificial intelligence",
+    "AI assistant",
+    "AI tools",
+    "team collaboration",
+    "productivity tools",
+    "AI-powered",
+    "workflow management",
+    "smart automation",
+    "AI platform",
   ],
   authors: [{ name: "Luminite AI Team" }],
+  creator: "Luminite AI",
+  publisher: "Luminite AI",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "Luminite AI - All-in-One AI-Powered Task Management",
-    description:
-      "Transform your productivity with intelligent task management powered by AI",
     type: "website",
+    locale: "en_US",
+    url: "https://luminite-ai.vercel.app",
+    siteName: "Luminite AI",
+    title: "Luminite AI - All-in-One AI App",
+    description:
+      "Transform your productivity with the ultimate all-in-one AI application. Streamline workflows, automate tasks, and work smarter with Luminite AI.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Luminite AI - All-in-One AI App",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Luminite AI - All-in-One AI App",
+    description:
+      "Transform your productivity with the ultimate all-in-one AI application.",
+    images: ["/og-image.png"],
+    creator: "@luminiteai",
+  },
+  alternates: {
+    canonical: "https://luminite-ai.vercel.app",
+  },
+  category: "Productivity",
+  classification: "Business Software",
+  other: {
+    "application-name": "Luminite AI",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-title": "Luminite AI",
+    "mobile-web-app-capable": "yes",
+    "theme-color": "#A855F7",
   },
 };
 

@@ -31,10 +31,11 @@ export function CTASection() {
       
       if (typeof window !== "undefined") {
         gsap.registerPlugin(ScrollTrigger);
+        gsap.config({ nullTargetWarn: false });
       }
 
       const ctx = gsap.context(() => {
-      // Animate header badge
+      // Animate header badge dengan optimasi
       const badgeElement = headerRef.current?.querySelector(".badge");
       if (badgeElement) {
         gsap.fromTo(
@@ -43,6 +44,7 @@ export function CTASection() {
             opacity: 0,
             scale: 0.8,
             y: -20,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -50,41 +52,49 @@ export function CTASection() {
             y: 0,
             duration: 0.6,
             ease: "back.out(1.7)",
+            force3D: true,
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top 85%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
       }
 
-      // Animate title
+      // Animate title dengan optimasi
       gsap.fromTo(
         titleRef.current,
         {
           opacity: 0,
           y: 50,
+          force3D: true,
         },
         {
           opacity: 1,
           y: 0,
           duration: 1,
           ease: "power3.out",
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 80%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate description
+      // Animate description dengan optimasi
       gsap.fromTo(
         descriptionRef.current,
         {
           opacity: 0,
           y: 30,
+          force3D: true,
         },
         {
           opacity: 1,
@@ -92,21 +102,25 @@ export function CTASection() {
           duration: 0.8,
           ease: "power2.out",
           delay: 0.2,
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 75%",
             toggleActions: "play none none reverse",
+            markers: false,
+            invalidateOnRefresh: false,
           },
         }
       );
 
-      // Animate buttons
+      // Animate buttons dengan optimasi
       if (buttonsRef.current) {
         gsap.fromTo(
           buttonsRef.current,
           {
             opacity: 0,
             y: 30,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -114,22 +128,26 @@ export function CTASection() {
             duration: 0.8,
             ease: "power3.out",
             delay: 0.4,
+            force3D: true,
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top 70%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
       }
 
-      // Animate info items
+      // Animate info items dengan optimasi
       if (infoRef.current) {
         gsap.fromTo(
           infoRef.current.querySelectorAll(".info-item"),
           {
             opacity: 0,
             x: -20,
+            force3D: true,
           },
           {
             opacity: 1,
@@ -138,24 +156,30 @@ export function CTASection() {
             ease: "power2.out",
             stagger: 0.1,
             delay: 0.6,
+            force3D: true,
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top 65%",
               toggleActions: "play none none reverse",
+              markers: false,
+              invalidateOnRefresh: false,
             },
           }
         );
       }
 
-      // Parallax background
+      // Parallax background dengan optimasi scrub
       if (backgroundRef.current) {
         gsap.to(backgroundRef.current, {
           y: -80,
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top bottom",
             end: "bottom top",
-            scrub: 1,
+            scrub: true,
+            markers: false,
+            invalidateOnRefresh: false,
           },
         });
       }

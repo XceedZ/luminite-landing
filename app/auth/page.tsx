@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Github, Mail, Lock, User, ArrowRight, AtSign, X, Check, Plus, Wand2, Loader2, ArrowUp } from "lucide-react";
+import { Github, Mail, Lock, User, ArrowRight, ArrowLeft, AtSign, X, Check, Plus, Wand2, Loader2, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   InputGroup,
@@ -94,8 +94,11 @@ export default function AuthPage() {
     const animatePage = async () => {
       const gsap = (await import('gsap')).default;
 
+      // Optimasi global GSAP
+      gsap.config({ nullTargetWarn: false });
+
       const ctx = gsap.context(() => {
-        // Animate left side content (AIInputSection/Code Block)
+        // Animate left side content dengan optimasi
         if (leftContentRef.current) {
           gsap.fromTo(
             leftContentRef.current,
@@ -103,6 +106,7 @@ export default function AuthPage() {
               opacity: 0,
               scale: 0.95,
               x: -50,
+              force3D: true,
             },
             {
               opacity: 1,
@@ -111,11 +115,12 @@ export default function AuthPage() {
               duration: 1,
               ease: "power3.out",
               delay: 0.2,
+              force3D: true,
             }
           );
         }
 
-        // Animate logo
+        // Animate logo dengan optimasi
         if (logoRef.current) {
           gsap.fromTo(
             logoRef.current,
@@ -123,6 +128,7 @@ export default function AuthPage() {
               opacity: 0,
               scale: 0.8,
               y: -20,
+              force3D: true,
             },
             {
               opacity: 1,
@@ -130,17 +136,19 @@ export default function AuthPage() {
               y: 0,
               duration: 0.6,
               ease: "back.out(1.7)",
+              force3D: true,
             }
           );
         }
 
-        // Animate welcome message
+        // Animate welcome message dengan optimasi
         if (welcomeRef.current) {
           gsap.fromTo(
             welcomeRef.current,
             {
               opacity: 0,
               y: 30,
+              force3D: true,
             },
             {
               opacity: 1,
@@ -148,11 +156,12 @@ export default function AuthPage() {
               duration: 0.8,
               ease: "power2.out",
               delay: 0.1,
+              force3D: true,
             }
           );
         }
 
-        // Animate OAuth buttons with stagger
+        // Animate OAuth buttons dengan optimasi
         if (oauthButtonsRef.current) {
           const buttons = oauthButtonsRef.current.children;
           gsap.fromTo(
@@ -160,6 +169,7 @@ export default function AuthPage() {
             {
               opacity: 0,
               y: 20,
+              force3D: true,
             },
             {
               opacity: 1,
@@ -168,11 +178,12 @@ export default function AuthPage() {
               ease: "power2.out",
               stagger: 0.1,
               delay: 0.3,
+              force3D: true,
             }
           );
         }
 
-        // Animate form fields with stagger
+        // Animate form fields dengan optimasi
         if (formRef.current) {
           const fields = formRef.current.querySelectorAll('.space-y-2');
           gsap.fromTo(
@@ -180,6 +191,7 @@ export default function AuthPage() {
             {
               opacity: 0,
               x: 30,
+              force3D: true,
             },
             {
               opacity: 1,
@@ -188,10 +200,11 @@ export default function AuthPage() {
               ease: "power2.out",
               stagger: 0.1,
               delay: 0.5,
+              force3D: true,
             }
           );
 
-          // Animate submit button
+          // Animate submit button dengan optimasi
           const submitButton = formRef.current.querySelector('button[type="submit"]');
           if (submitButton) {
             gsap.fromTo(
@@ -199,6 +212,7 @@ export default function AuthPage() {
               {
                 opacity: 0,
                 y: 20,
+                force3D: true,
               },
               {
                 opacity: 1,
@@ -206,18 +220,20 @@ export default function AuthPage() {
                 duration: 0.5,
                 ease: "power2.out",
                 delay: 0.8,
+                force3D: true,
               }
             );
           }
         }
 
-        // Animate footer text
+        // Animate footer text dengan optimasi
         if (footerRef.current) {
           gsap.fromTo(
             footerRef.current,
             {
               opacity: 0,
               y: 10,
+              force3D: true,
             },
             {
               opacity: 1,
@@ -225,6 +241,7 @@ export default function AuthPage() {
               duration: 0.5,
               ease: "power2.out",
               delay: 0.9,
+              force3D: true,
             }
           );
         }
@@ -252,17 +269,17 @@ export default function AuthPage() {
 
         {/* Multiple Orbs - Menumpuk di Bawah */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl animate-float-1" />
-          <div className="absolute bottom-[-50px] left-[100px] w-[350px] h-[350px] bg-primary/8 rounded-full blur-3xl animate-float-2" />
-          <div className="absolute bottom-[-100px] left-[200px] w-[300px] h-[300px] bg-primary/12 rounded-full blur-3xl animate-float-3" />
-          <div className="absolute bottom-[-150px] left-[300px] w-[400px] h-[400px] bg-primary/9 rounded-full blur-3xl animate-float-4" />
-          <div className="absolute bottom-[-80px] left-[50px] w-[320px] h-[320px] bg-primary/11 rounded-full blur-3xl animate-float-5" />
-          <div className="absolute bottom-[-120px] left-[150px] w-[380px] h-[380px] bg-primary/7 rounded-full blur-3xl animate-float-6" />
-          <div className="absolute bottom-[-200px] left-[250px] w-[360px] h-[360px] bg-primary/10 rounded-full blur-3xl animate-float-1" />
-          <div className="absolute bottom-[-60px] left-[350px] w-[340px] h-[340px] bg-primary/8 rounded-full blur-3xl animate-float-2" />
-          <div className="absolute bottom-[-180px] left-[100px] w-[280px] h-[280px] bg-primary/9 rounded-full blur-3xl animate-float-3" />
-          <div className="absolute bottom-[-140px] left-[400px] w-[300px] h-[300px] bg-primary/11 rounded-full blur-3xl animate-float-4" />
-          <div className="absolute bottom-[-220px] left-[180px] w-[320px] h-[320px] bg-primary/8 rounded-full blur-3xl animate-float-5" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full blur-3xl orb-1 orb-delay-0" />
+          <div className="absolute bottom-[-50px] left-[100px] w-[350px] h-[350px] rounded-full blur-3xl orb-2 orb-delay-1" />
+          <div className="absolute bottom-[-100px] left-[200px] w-[300px] h-[300px] rounded-full blur-3xl orb-3 orb-delay-2" />
+          <div className="absolute bottom-[-150px] left-[300px] w-[400px] h-[400px] rounded-full blur-3xl orb-4 orb-delay-0-5" />
+          <div className="absolute bottom-[-80px] left-[50px] w-[320px] h-[320px] rounded-full blur-3xl orb-5 orb-delay-1-5" />
+          <div className="absolute bottom-[-120px] left-[150px] w-[380px] h-[380px] rounded-full blur-3xl orb-6 orb-delay-0-3" />
+          <div className="absolute bottom-[-200px] left-[250px] w-[360px] h-[360px] rounded-full blur-3xl orb-1 orb-delay-1" />
+          <div className="absolute bottom-[-60px] left-[350px] w-[340px] h-[340px] rounded-full blur-3xl orb-2 orb-delay-0-3" />
+          <div className="absolute bottom-[-180px] left-[100px] w-[280px] h-[280px] rounded-full blur-3xl orb-3 orb-delay-0-5" />
+          <div className="absolute bottom-[-140px] left-[400px] w-[300px] h-[300px] rounded-full blur-3xl orb-4 orb-delay-1-5" />
+          <div className="absolute bottom-[-220px] left-[180px] w-[320px] h-[320px] rounded-full blur-3xl orb-5 orb-delay-2" />
         </div>
 
         {/* Content - AIInputSection untuk Sign In, Code Block untuk Sign Up */}
@@ -270,9 +287,9 @@ export default function AuthPage() {
           {isSignIn ? (
             // AIInputSection untuk Sign In
             <div className="relative flex w-full justify-center items-center">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-2/3 bg-white/8 blur-3xl rounded-full pointer-events-none animate-float-1" />
-              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-1/2 h-full bg-white/6 blur-3xl rounded-full pointer-events-none animate-float-2" />
-              <div className="absolute top-1/2 right-0 -translate-y-1/2 w-1/2 h-full bg-white/6 blur-3xl rounded-full pointer-events-none animate-float-3" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-2/3 rounded-full blur-3xl pointer-events-none orb-1 orb-delay-0" />
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-1/2 h-full rounded-full blur-3xl pointer-events-none orb-2 orb-delay-1" />
+              <div className="absolute top-1/2 right-0 -translate-y-1/2 w-1/2 h-full rounded-full blur-3xl pointer-events-none orb-3 orb-delay-0-5" />
 
               <div className="relative w-full rounded-2xl shadow-2xl overflow-hidden border border-border/50 bg-background/40 backdrop-blur-xl">
                 <InputGroup className="rounded-xl border-0 bg-transparent">
@@ -406,23 +423,38 @@ export default function AuthPage() {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex flex-col bg-background p-8 lg:p-12">
+      <div className="flex-1 flex flex-col bg-background p-8 lg:p-12 relative">
+        {/* Back Button - Pojok Kanan Atas */}
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="absolute top-8 right-8 lg:top-12 lg:right-12"
+          onClick={() => {
+            window.history.back();
+          }}
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+
         <div className="w-full max-w-md mx-auto flex-1 flex flex-col justify-center">
-          {/* Logo dan Welcome Message - Pojok Kiri Atas */}
+          {/* Logo - Pojok Kiri Atas (Desktop) */}
+          <div ref={logoRef} className="hidden lg:flex items-center space-x-2 mb-8">
+            <img
+              src="/logo.svg"
+              alt="Luminite AI Logo"
+              className="w-8 h-8"
+            />
+            <span className="text-xl font-bold text-white">
+              Luminite
+            </span>
+            <span className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary border border-primary/30">
+              AI
+            </span>
+          </div>
+
+          {/* Welcome Message */}
           <div className="mb-8">
-            <div ref={logoRef} className="flex items-center space-x-2 mb-6">
-              <img
-                src="/logo.svg"
-                alt="Luminite AI Logo"
-                className="w-8 h-8"
-              />
-              <span className="text-xl font-bold text-white">
-                Luminite
-              </span>
-              <span className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary border border-primary/30">
-                AI
-              </span>
-            </div>
             <div ref={welcomeRef}>
               <h1 className="text-3xl font-bold text-white mb-2">
                 {isSignIn ? "Welcome back" : "Get started"}
@@ -435,23 +467,24 @@ export default function AuthPage() {
             </div>
           </div>
 
-          {/* OAuth Buttons */}
-          <div ref={oauthButtonsRef} className="space-y-3 mb-6">
+          {/* OAuth Buttons - 1 Baris */}
+          <div ref={oauthButtonsRef} className="flex gap-3 mb-6">
             <Button
               type="button"
               variant="outline"
-              className="w-full justify-center gap-2 h-11"
+              className="flex-1 justify-center gap-2 h-11"
               onClick={() => {
                 console.log("GitHub OAuth");
               }}
             >
               <Github className="w-5 h-5" />
-              Continue with GitHub
+              <span className="hidden sm:inline">Continue with GitHub</span>
+              <span className="sm:hidden">GitHub</span>
             </Button>
             <Button
               type="button"
               variant="outline"
-              className="w-full justify-center gap-2 h-11"
+              className="flex-1 justify-center gap-2 h-11"
               onClick={() => {
                 console.log("Google OAuth");
               }}
@@ -474,7 +507,8 @@ export default function AuthPage() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Continue with Google
+              <span className="hidden sm:inline">Continue with Google</span>
+              <span className="sm:hidden">Google</span>
             </Button>
           </div>
 
